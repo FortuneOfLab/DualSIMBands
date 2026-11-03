@@ -44,6 +44,8 @@ public final class TrafficGenerator {
     private final Listener listener;
     private ConnectivityManager.NetworkCallback callback;
     private volatile Thread worker;
+    /** The cellular network the worker uses; a loss of another one (after a switch) changes nothing. */
+    private volatile Network current;
     private volatile boolean running;
     private volatile long bytes;
     /**
@@ -75,7 +77,14 @@ public final class TrafficGenerator {
                 }
             }
             @Override public void onLost(Network network) {
-                synchronized (TrafficGenerator.this) { if (gen == generation) interruptWorker(); }
+                synchronized (TrafficGenerator.this) {
+                    if (gen != generation || !network.equals(current)) return;
+                    interruptWorker();
+                    current = null;
+                    // Waiting again, and no longer validated: neither the header nor history keeps the lost network's.
+                    listener.onState(State.WAITING_FOR_MOBILE, bytes, gen);
+                    listener.onValidated(false);
+                }
             }
         };
         cm.requestNetwork(req, callback);
@@ -90,6 +99,7 @@ public final class TrafficGenerator {
         running = false;
         generation++;
         interruptWorker();
+        current = null;
         try { cm.unregisterNetworkCallback(callback); } catch (RuntimeException ignored) { /* already gone */ }
         callback = null;
         listener.onState(State.STOPPED, bytes, generation);
@@ -98,6 +108,7 @@ public final class TrafficGenerator {
     private synchronized void run(Network network, int gen) {
         if (gen != generation) return;
         interruptWorker();
+        current = network;
         Thread t = new Thread(() -> loop(network, gen), "traffic");
         worker = t;
         t.start();

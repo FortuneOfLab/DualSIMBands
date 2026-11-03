@@ -65,8 +65,10 @@ public final class RadioFragment extends Fragment implements RadioRepository.Lis
             startLive();
             // Pushed only on change: while the listener is registered the last report is still current.
             long now = SystemClock.elapsedRealtime();
+            // Only while that line's registration stands: after a failed or dropped one, the last report ages and
+            // goes stale instead of standing as verified (as in MonitorService).
             for (Map.Entry<Integer, List<RadioSnapshot.PhysicalChannel>> e : lastLive.entrySet())
-                repository.keepPhysicalChannelsCurrent(e.getKey(), e.getValue(), now);
+                if (liveCurrent(e.getKey())) repository.keepPhysicalChannelsCurrent(e.getKey(), e.getValue(), now);
             handler.postDelayed(this, CELL_REFRESH_MS);
         }
     };
@@ -77,6 +79,8 @@ public final class RadioFragment extends Fragment implements RadioRepository.Lis
     /** Experimental live PhysicalChannelConfig (Shizuku), registered only between begin() and end(). */
     private io.github.fortuneoflab.dualsimbands.LivePhysicalChannels live;
     private final Map<Integer, List<RadioSnapshot.PhysicalChannel>> lastLive = new HashMap<>();
+    /** The lines the live listener was registered for by the last successful start; empty otherwise. */
+    private List<Integer> liveIds = new ArrayList<>();
     private String liveError, shownProblem;
     /** Opt-in traffic, held between begin() and end() (history may hold it longer). */
     private final Runnable trafficChanged = this::requestRender;
@@ -174,20 +178,36 @@ public final class RadioFragment extends Fragment implements RadioRepository.Lis
         if (!liveWanted() || sims.isEmpty()) {
             // A switch turned off, or an unregister that could not run while Shizuku was down: retry it.
             if (live != null && live.isRunning() && !wantedBySettings()) live.stop();
+            // Once nothing is registered, nothing keeps the last reports current.
+            if (live == null || !live.isRunning()) { lastLive.clear(); liveIds = new ArrayList<>(); }
             refreshProblem();
             return;
         }
         if (live == null) live = new io.github.fortuneoflab.dualsimbands.LivePhysicalChannels((subId, channels, at) -> handler.post(() -> {
-            if (!observing) return;
+            if (!observing || !liveCurrent(subId)) return;
             lastLive.put(subId, channels);
             repository.setPhysicalChannels(subId, channels, at);
         }));
         List<Integer> ids = new ArrayList<>();
         for (SubscriptionRepository.Sim s : sims) ids.add(s.subscriptionId);
+        // The SIMs changed: register afresh, so a line no longer in use is not kept.
+        if (!ids.equals(liveIds) && live.isRunning()) {
+            live.stop();
+            lastLive.keySet().retainAll(ids);
+        }
         String error = live.start(ids);
-        if (error != null) android.util.Log.w("DualSIMBands", "live PhysicalChannelConfig: " + error);
+        if (error != null) {
+            android.util.Log.w("DualSIMBands", "live PhysicalChannelConfig: " + error);
+            lastLive.clear();
+        }
+        liveIds = error == null ? ids : new ArrayList<>();
         liveError = error;
         refreshProblem();
+    }
+
+    /** A live report for this line counts: the listener is registered, and was registered for it. */
+    private boolean liveCurrent(int subId) {
+        return live != null && live.isRunning() && liveIds.contains(subId);
     }
 
     private void refreshProblem() {
@@ -241,6 +261,7 @@ public final class RadioFragment extends Fragment implements RadioRepository.Lis
         io.github.fortuneoflab.dualsimbands.traffic.TrafficSession.get().screenHidden();
         if (live != null) live.stop();
         lastLive.clear();
+        liveIds = new ArrayList<>();
         repository.stop();
         handler.removeCallbacks(cellTick);
         handler.removeCallbacks(renderTick);
