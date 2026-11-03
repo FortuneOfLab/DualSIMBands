@@ -213,7 +213,7 @@
     <string name="labels_basic_mode_missing">ステータスバーのカスタマイズにはShizukuが必要です。Shizukuをインストールして開始してください。バンドの表示と履歴は、Shizukuがなくても使えます。</string>
     <string name="term_bars">アンテナの棒（バーの下）</string>
     <string name="term_carrier_colors">キャリアの色</string>
-    <string name="term_carrier_colors_desc">キャリア構成の帯とバンドの印の色。LTE は青、NR は周波数の種類で分け、転用5G は緑、Sub-6 は橙、ミリ波は赤紫。種類はNRの欄と同じ判定で、分からないときは橙</string>
+    <string name="term_carrier_colors_desc">キャリア構成の帯とバンドの印の色。LTE は青、NR は青緑で、周波数の種類で濃さを分け、Sub-6 は青緑、転用5G は明るい青緑、ミリ波は濃い青緑。種類はNRの欄と同じ判定で、分からないときは Sub-6 と同じ青緑</string>
     <string name="term_bars_desc">そのキャリアのRSRPから求めた4段階の目安（−85 dBm以上で4本、以下10 dBごとに1本ずつ減る）。色は信号の棒と同じ。枠だけのときは信号が報告されていない。端末のステータスバーのアンテナ表示とは段階が一致しないことがある</string>
     <string name="labels_global_title">ステータスバー</string>
     <string name="labels_show_name">キャリア名を常に表示</string>

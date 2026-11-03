@@ -217,7 +217,7 @@
     <string name="labels_basic_mode_missing">Customizing the status bar needs Shizuku. Install and start Shizuku. Bands and history work without Shizuku.</string>
     <string name="term_bars">Signal bars (under the bar)</string>
     <string name="term_carrier_colors">Carrier colors</string>
-    <string name="term_carrier_colors_desc">Colors of the carrier bar and the band badges. LTE is blue; NR is split by frequency class: refarmed green, Sub-6 orange, mmWave magenta. The class is decided as in the NR column; orange when unknown</string>
+    <string name="term_carrier_colors_desc">Colors of the carrier bar and the band badges. LTE is blue and NR teal, in shades by frequency class: Sub-6 teal, refarmed a lighter teal, mmWave a darker teal. The class is decided as in the NR column; the Sub-6 teal when unknown</string>
     <string name="term_bars_desc">A four-step guide from that carrier\'s RSRP (4 bars at −85 dBm and above, one fewer every 10 dB). Colors match the meters. Outlined bars mean no signal was reported. The steps may differ from the status bar\'s signal icon</string>
     <string name="labels_global_title">Status bar</string>
     <string name="labels_show_name">Always show the carrier name</string>
