@@ -1,0 +1,48 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- CellInfo (band/EARFCN/signal per cell). Requested at runtime only when the user opts in. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Normal permission (granted at install): tells whether Wi-Fi is the default network. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Only for the opt-in traffic generator: receive test data from a speed-test endpoint over mobile. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- Opt-in ongoing notification: location-type foreground service (CellInfo is location data). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
+    <queries><package android:name="moe.shizuku.privileged.api" /></queries>
+    <instrumentation android:name=".ApplyInstrumentation" android:targetPackage="${applicationId}" />
+    <!-- Experimental, user-triggered: reads PhysicalChannelConfig with shell permission delegated via Shizuku. -->
+    <instrumentation android:name=".ProbeInstrumentation" android:targetPackage="${applicationId}" />
+    <!-- Experimental, user-confirmed: switches the default data SIM with MODIFY_PHONE_STATE delegated via Shizuku. -->
+    <instrumentation android:name=".DataSimInstrumentation" android:targetPackage="${applicationId}" />
+    <!-- While history is recorded with the composition read automatically: sets nr_nsa_tracking_screen_off_mode to 2 and puts it back afterwards, with WRITE_SECURE_SETTINGS delegated via Shizuku. -->
+    <instrumentation android:name=".NrTrackingInstrumentation" android:targetPackage="${applicationId}" />
+    <application android:name=".LabelApp" android:label="@string/app_name" android:localeConfig="@xml/locales_config" tools:targetApi="33" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher"
+        android:allowBackup="false" android:supportsRtl="true" android:theme="@style/AppTheme">
+        <meta-data android:name="moe.shizuku.client.V3_SUPPORT" android:value="true" />
+        <activity android:name=".ui.TermsActivity" android:exported="false" android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+        </activity>
+        <provider android:name="rikka.shizuku.ShizukuProvider" android:authorities="${applicationId}.shizuku"
+            android:enabled="true" android:exported="true" android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+        <receiver android:name=".BootReceiver" android:exported="false">
+            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /><action android:name="android.intent.action.MY_PACKAGE_REPLACED" /></intent-filter>
+        </receiver>
+        <!-- Sent by the phone process when a SIM's carrier config loads (a line became active): re-applies saved
+             settings. Exported so the phone process can deliver it; the action is protected (system only). -->
+        <receiver android:name=".SimChangeReceiver" android:exported="true">
+            <intent-filter><action android:name="android.telephony.action.CARRIER_CONFIG_CHANGED" /></intent-filter>
+        </receiver>
+        <service android:name=".monitor.MonitorService" android:exported="false"
+            android:foregroundServiceType="location" />
+        <service android:name=".RestoreJob" android:exported="true" android:permission="android.permission.BIND_JOB_SERVICE" />
+    </application>
+</manifest>

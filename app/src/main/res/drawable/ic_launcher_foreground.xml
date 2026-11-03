@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dual SIM Bands: two landscape SIM cards; the front one carries "5G" and rising band bars.
+     Vector drawables have no text, so "5" and "G" are stroked paths. Safe zone is 21..87 of 108. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.55"
+        android:pathData="M28,30H61L70,39V58Q70,62 66,62H28Q24,62 24,58V34Q24,30 28,30Z" />
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M42,46H75L84,55V74Q84,78 80,78H42Q38,78 38,74V50Q38,46 42,46Z" />
+    <!-- "5" -->
+    <path android:strokeColor="#176B55" android:strokeWidth="2.6" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M50,56H44L43.5,62C45,61.3 46,61 47,61C49.6,61 51,62.7 51,65.3C51,68 49.3,70 46.6,70C44.9,70 43.6,69.2 43,68" />
+    <!-- "G" -->
+    <path android:strokeColor="#176B55" android:strokeWidth="2.6" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M61,59C60.3,57.1 58.8,56 56.9,56C54.6,56 53,58 53,63C53,68 54.6,70 57,70C59.2,70 61,68.5 61,65.5V63.5H57.5" />
+    <!-- band bars -->
+    <path android:fillColor="#176B55"
+        android:pathData="M64,67h3.3v5h-3.3zM68.8,63h3.3v9h-3.3zM73.6,59h3.3v13h-3.3zM78.4,54h3.3v18h-3.3z" />
+</vector>

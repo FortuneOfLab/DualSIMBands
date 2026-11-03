@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The launcher name, so the demo is not taken for the real app; the screen titles stay "Dual SIM Bands". -->
+    <string name="demo_label" translatable="false">DSB Demo</string>
+</resources>

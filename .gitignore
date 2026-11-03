@@ -1,0 +1,10 @@
+.gradle/
+.idea/
+local.properties
+**/build/
+# Distribution archives / build outputs kept outside version control
+*.apk
+# Release signing: the key and its passwords never go into git
+keystore.properties
+*.jks
+*.keystore

@@ -1,0 +1,4 @@
+<resources>
+    <color name="chart_unknown">#898781</color>
+    <color name="chart_track">#26ffffff</color>
+</resources>

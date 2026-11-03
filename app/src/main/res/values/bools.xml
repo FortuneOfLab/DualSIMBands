@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Which strings Android picked for this app (values or values-ja); Tr follows it for text built in code. -->
+    <bool name="tr_japanese">false</bool>
+</resources>

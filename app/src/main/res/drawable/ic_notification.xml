@@ -1,0 +1,6 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <!-- A SIM card outline holding the carrier bar's segments, like the launcher icon; unlike Android's signal bars. -->
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="2" android:strokeLineJoin="round"
+        android:pathData="M5,2H15L20,7V21A1,1 0 0,1 19,22H5A1,1 0 0,1 4,21V3A1,1 0 0,1 5,2Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M7,11h6v3h-6zM14,11h3v3h-3zM7,16h3v3h-3zM11,16h6v3h-6z" />
+</vector>

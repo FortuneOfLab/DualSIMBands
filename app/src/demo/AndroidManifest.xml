@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Demo build only: sample data for screenshots. Nothing restores, re-applies or monitors in the background. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <application android:label="@string/demo_label" tools:replace="android:label">
+        <provider android:name=".ui.DemoInit" android:authorities="${applicationId}.demoinit" android:exported="false" />
+        <receiver android:name=".BootReceiver" tools:node="remove" />
+        <receiver android:name=".SimChangeReceiver" tools:node="remove" />
+        <service android:name=".RestoreJob" tools:node="remove" />
+    </application>
+</manifest>

@@ -1,0 +1,32 @@
+<resources>
+    <color name="launcher_background">#176B55</color>
+    <!-- Fallback seed when dynamic color is unavailable. -->
+    <color name="brand">#176B55</color>
+
+    <!-- Charts (user's choice, 2026-11-02): LTE blue, NR teal, mid-tones that sit on both the light and the dark
+         card, so values-night does not redefine them; neither hue is a SIM stripe colour.
+         Marks always carry a text label, because their contrast on the card is below 3:1. -->
+    <color name="chart_lte">#6b9fe0</color>
+    <color name="chart_nr">#1fa8a0</color>
+    <!-- NR by frequency class (chart_nr is Sub-6 and any NR whose class is unknown): lighter and darker teal. -->
+    <color name="chart_nr_refarmed">#6ccbc4</color>
+    <color name="chart_nr_mmwave">#0f7d77</color>
+    <!-- Band badges: the bar colours, with a white or near-black label, whichever reads at 4.5:1 or more. -->
+    <color name="badge_lte">#6b9fe0</color>
+    <color name="badge_nr">#1fa8a0</color>
+    <color name="badge_nr_refarmed">#6ccbc4</color>
+    <color name="badge_nr_mmwave">#0f7d77</color>
+    <color name="chart_unknown">#898781</color>
+    <!-- Light-theme fill for cards and settings tiles (Ui.surface). -->
+    <color name="card_light">#EEEEEE</color>
+    <!-- SIM card stripes by network (approximations, not the operators' official colours). -->
+    <color name="sim_docomo">#CC0033</color>
+    <color name="sim_kddi">#EB5505</color>
+    <color name="sim_softbank">#8C8C8C</color>
+    <color name="sim_rakuten">#E5007F</color>
+    <color name="chart_track">#1f0b0b0b</color>
+    <!-- Status: shown with a text label (良好/普通/弱い), never colour alone. -->
+    <color name="status_good">#0ca30c</color>
+    <color name="status_warning">#fab219</color>
+    <color name="status_critical">#d03b3b</color>
+</resources>

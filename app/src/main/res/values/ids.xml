@@ -1,0 +1,4 @@
+<resources>
+    <!-- The bands screen has no menu item; its id keeps the screen list in MainActivity uniform. -->
+    <item name="nav_radio" type="id" />
+</resources>

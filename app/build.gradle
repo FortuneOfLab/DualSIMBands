@@ -1,0 +1,67 @@
+plugins { id 'com.android.application' }
+
+// Release signing key, kept outside version control: keystore.properties at the project root names the
+// keystore file and its passwords (see keystore.properties.example). Without it the release build stays
+// unsigned; it is never signed with a debug key by accident. Debug and demo builds use the debug key the
+// Android SDK keeps on each computer (~/.android/debug.keystore); none is kept in the repository.
+def releaseKeyFile = rootProject.file('keystore.properties')
+def releaseKey = new Properties()
+if (releaseKeyFile.exists()) releaseKeyFile.withInputStream { releaseKey.load(it) }
+
+android {
+    namespace 'io.github.fortuneoflab.dualsimbands'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'io.github.fortuneoflab.dualsimbands'
+        minSdk 31
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    signingConfigs {
+        if (releaseKeyFile.exists()) {
+            release {
+                storeFile file(releaseKey['storeFile'])
+                storePassword releaseKey['storePassword']
+                keyAlias releaseKey['keyAlias']
+                keyPassword releaseKey['keyPassword']
+            }
+        }
+    }
+    buildTypes {
+        // Shrinking stays off because the Shizuku bridge reaches platform classes by reflection.
+        release {
+            minifyEnabled false
+            if (releaseKeyFile.exists()) signingConfig signingConfigs.release
+        }
+        // Sample SIMs and radio states on the bands screen, for screenshots (src/demo). Its own application ID, so it
+        // installs beside the real app and never touches its settings or history; never distributed.
+        demo {
+            initWith debug
+            applicationIdSuffix '.demo'
+            versionNameSuffix '-demo'
+            matchingFallbacks = ['debug']
+        }
+    }
+    // Findings from before the first commit; new issues still fail lint.
+    lint { baseline = file('lint-baseline.xml') }
+}
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.8.0'
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
+    implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:6.1'
+    testImplementation 'junit:junit:4.13.2'
+    // android.jar only has stubs of org.json; StoreSaveTest reads and marks real baselines.
+    testImplementation 'org.json:json:20260814'
+}
+// BadgeContrastTest reads these files directly: declared as inputs so a colour change runs it again.
+tasks.withType(Test).configureEach {
+    inputs.files('src/main/res/values/colors.xml', 'src/main/res/values-night/colors.xml')
+        .withPropertyName('badgeColors').withPathSensitivity(PathSensitivity.RELATIVE)
+}

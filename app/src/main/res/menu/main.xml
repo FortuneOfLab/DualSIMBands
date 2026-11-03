@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Material 3 top app bar: the frequent action as an icon, the rest in the overflow menu. -->
+    <item android:id="@+id/nav_history" android:icon="@drawable/ic_nav_history" android:title="@string/tab_history"
+        app:showAsAction="ifRoom" />
+    <!-- Checked while cell ID, TAC and TA are masked: quick to turn on before a screenshot. -->
+    <item android:id="@+id/menu_mask_ids" android:title="@string/menu_mask_ids" android:checkable="true"
+        app:showAsAction="never" />
+    <item android:id="@+id/nav_labels" android:title="@string/tab_labels" app:showAsAction="never" />
+    <item android:id="@+id/nav_settings" android:title="@string/tab_settings" app:showAsAction="never" />
+    <!-- One place for Android's SIM screen (turning SIMs on, off and swapping them, calls and SMS). -->
+    <item android:id="@+id/menu_sim_settings" android:title="@string/menu_sim_settings" app:showAsAction="never" />
+    <item android:id="@+id/menu_terms" android:title="@string/settings_terms" app:showAsAction="never" />
+    <item android:id="@+id/menu_about" android:title="@string/settings_about" app:showAsAction="never" />
+</menu>
